@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+    bot:
+        image: procsiab/ntvpromo:latest
+        volumes:
+            - ./app:/app:z
+            - ./.secrets:/secrets:z
+        restart: unless-stopped

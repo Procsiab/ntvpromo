@@ -1,0 +1,2 @@
+twitter-scraper
+python-telegram-bot
