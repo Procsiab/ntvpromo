@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
-from NtvPromoBot import NtvPromoBot as BOT
 from pathlib import Path
+
+from NtvPromoBot import NtvPromoBot as BOT
 
 TOKEN = ''
 AUTH_USER = ''
 
 
+# Look for a secrets folder mounted in the root / (for the Docker container);
+# if not present, assume the folder is in the same folder from which the
+# command was launched
 def _init_secrets():
     global TOKEN
     global AUTH_USER

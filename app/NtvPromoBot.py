@@ -1,6 +1,7 @@
-from TweetScraper import TweetScraper as SCRAPER
-from telegram.ext import Updater, CommandHandler, CallbackContext
 import logging
+
+from telegram.ext import CallbackContext, CommandHandler, Updater
+from TweetScraper import TweetScraper as SCRAPER
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
                     level=logging.INFO)

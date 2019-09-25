@@ -1,2 +1,4 @@
 # Secrets folder
 .secrets/*
+# Data file
+latest.json
