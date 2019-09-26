@@ -33,9 +33,10 @@ class NtvPromoBot:
     def _callback_twitter(self, context: CallbackContext):
         response = self._scraper.get_updates()
         if response is not None:
-            context.bot.send_message(chat_id=self._auth_user,
-                                     text=response['text'])
-            logging.info("Sent update to the user {}".format(self._auth_user))
+            for user in self._auth_user:
+                context.bot.send_message(chat_id=user,
+                                         text=response['text'])
+                logging.info("Sent update to the user {}".format(user))
         else:
             logging.info("No recent promo codes from @ItaloTreno")
 

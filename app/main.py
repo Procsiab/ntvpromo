@@ -5,7 +5,7 @@ from pathlib import Path
 from NtvPromoBot import NtvPromoBot as BOT
 
 TOKEN = ''
-AUTH_USER = ''
+AUTH_USER = []
 
 
 # Look for a secrets folder mounted in the root / (for the Docker container);
@@ -21,7 +21,8 @@ def _init_secrets():
     with open(_secrets_path + 'TOKEN.secret', 'r') as secret:
         TOKEN = secret.read().rstrip()
     with open(_secrets_path + 'AUTH_USER.secret', 'r') as secret:
-        AUTH_USER = secret.read().rstrip()
+        for line in secret:
+            AUTH_USER.append(line.rstrip())
 
 
 # Main routine
