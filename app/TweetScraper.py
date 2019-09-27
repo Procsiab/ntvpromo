@@ -53,7 +53,7 @@ class TweetScraper:
             if any(word in tweet['text'] for word in TARGET_WORDLIST):
                 if self._check_date(tweet['time']):
                     self._latest['text'] = tweet['text']
-                    self._latest['time'] = tweet['time']
+                    self._latest['time'] = tweet['time'].strftime(DATE_FORMAT)
                     return True
         return False
 
