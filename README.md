@@ -22,6 +22,8 @@ The `.secret` text files should contain the following data:
 
 ## Running with Docker Compose
 
+You may first choose the correct image for the host CPU architecture; change the `image:` property using either the `amd64` or the `arm32` tag. The default is `amd64`.
+
 Open the repository's root directory in a terminal and issue the following command:
 
 ```bash

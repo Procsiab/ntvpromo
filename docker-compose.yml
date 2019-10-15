@@ -1,7 +1,7 @@
 version: "3.7"
 services:
     bot:
-        image: procsiab/ntvpromo:latest
+        image: procsiab/ntvpromo:amd64
         volumes:
             - ./app:/app:z
             - ./.secrets:/secrets:z
