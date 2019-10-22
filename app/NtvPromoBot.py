@@ -1,5 +1,6 @@
 import logging
 
+from telegram import ParseMode
 from telegram.ext import CallbackContext, CommandHandler, Updater
 from TweetScraper import TweetScraper as SCRAPER
 
@@ -35,7 +36,8 @@ class NtvPromoBot:
         if response is not None:
             for user in self._auth_user:
                 context.bot.send_message(chat_id=user,
-                                         text=response['text'])
+                                         text=response['text'],
+                                         parse_mode=ParseMode.HTML)
                 logging.info("Sent update to the user {}".format(user))
         else:
             logging.info("No recent promo codes from @ItaloTreno")

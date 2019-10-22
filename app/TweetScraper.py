@@ -10,6 +10,13 @@ ACCOUNT_NAME = 'ItaloTreno'
 TARGET_WORDLIST = ['codice', 'promo', 'risparmi']
 FILE_NAME = 'latest.json'
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+MESSAGE_FORMAT = """🚄 Codice sconto: <b>{string}</b> [{drop}]
+⎯⎯⎯⎯⎯⎯⎯⎯
+📅 Periodo:\t\t{valid}
+⏰ <i>Entro</i>:\t\t{until}
+🎫 Disponibilità: {number}
+⎯⎯⎯⎯⎯⎯⎯⎯
+https://biglietti.italotreno.it"""
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
                     level=logging.INFO)
@@ -88,7 +95,6 @@ class TweetScraper:
         if valid_end is not None:
             valid_end = valid_end.groups()
             valid_end = valid_end[1] + valid_end[2] + valid_end[3]
-        # Build and format the message containing the promo code
         price_drop = code_drop[0]
         if len(code_drop) == 2:
             price_drop += " - " + code_drop[1]
@@ -96,15 +102,12 @@ class TweetScraper:
         if valid_end is not None:
             code_validity += " - " + valid_end
 
-        res = """Codice sconto: {string} [{drop}]
-
-Periodo:\t\t{valid}
-Entro:\t\t{until}
-Disponibilità: {number}""".format(string=code_str,
-                                  drop=price_drop,
-                                  valid=code_validity,
-                                  until=buy_until,
-                                  number=code_num)
+        # Build and format the message containing the promo code
+        res = MESSAGE_FORMAT.format(string=code_str,
+                                    drop=price_drop,
+                                    valid=code_validity,
+                                    until=buy_until,
+                                    number=code_num)
         return res
 
     def get_updates(self):
