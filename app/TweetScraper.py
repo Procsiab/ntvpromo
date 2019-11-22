@@ -1,6 +1,5 @@
 import json
 import logging
-import re
 from datetime import datetime
 
 from json.decoder import JSONDecodeError
@@ -10,13 +9,6 @@ ACCOUNT_NAME = 'ItaloTreno'
 TARGET_WORDLIST = ['codice', 'promo', 'risparmi']
 FILE_NAME = 'latest.json'
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
-MESSAGE_FORMAT = """🚄 Codice sconto: <b>{string}</b> [{drop}]
-⎯⎯⎯⎯⎯⎯⎯⎯
-📅 Periodo:\t\t{valid}
-⏰ <i>Entro</i>:\t\t{until}
-🎫 Disponibilità: {number}
-⎯⎯⎯⎯⎯⎯⎯⎯
-https://biglietti.italotreno.it"""
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
                     level=logging.INFO)
@@ -60,7 +52,7 @@ class TweetScraper:
         for tweet in tweet_list:
             if any(word in tweet['text'] for word in TARGET_WORDLIST):
                 if self._check_date(tweet['time']):
-                    self._latest['text'] = self._format_response(tweet['text'])
+                    self._latest['text'] = tweet['text']
                     self._latest['time'] = tweet['time'].strftime(DATE_FORMAT)
                     return True
         return False
@@ -71,44 +63,6 @@ class TweetScraper:
             return True
         else:
             return False
-
-    def _format_response(self, text):
-        # Parse the message to find relevant indormation
-        _RE_STR = "([A-Z]{3}[A-Z]*)([1-9]0)*"
-        _RE_DROP = "([-]*[1-9]{1}[0-9]+%)"
-        _RE_NUM = "([1-9]{1}[0-9]*[.][0]{3})"
-        _RE_UNTIL = "([Aa]cquista){1}([\D]+)(\d\d)([\D]+)(\d\d\/\d\d)"
-        _RE_VALID_START = "([Vv]iagg[io] dal){1}([\D]+)(\d\d)(\s|\/)([a-zA-Z]+|\d\d)"
-        _RE_VALID_END = "( al )(\d\d)(\s|\/)([a-zA-z]+|\d\d)"
-        code_str = re.search(_RE_STR, text).group()
-        code_drop = re.findall(_RE_DROP, text)
-        code_num = re.search(_RE_NUM, text)
-        if code_num is not None:
-            code_num = code_num.group()
-        else:
-            code_num = "N/A"
-        buy_until = re.search(_RE_UNTIL, text).groups()
-        buy_until = "{}, ore {}".format(buy_until[4], buy_until[2])
-        valid_start = re.search(_RE_VALID_START, text).groups()
-        valid_start = valid_start[2] + valid_start[3] + valid_start[4]
-        valid_end = re.search(_RE_VALID_END, text)
-        if valid_end is not None:
-            valid_end = valid_end.groups()
-            valid_end = valid_end[1] + valid_end[2] + valid_end[3]
-        price_drop = code_drop[0]
-        if len(code_drop) == 2:
-            price_drop += " - " + code_drop[1]
-        code_validity = valid_start
-        if valid_end is not None:
-            code_validity += " - " + valid_end
-
-        # Build and format the message containing the promo code
-        res = MESSAGE_FORMAT.format(string=code_str,
-                                    drop=price_drop,
-                                    valid=code_validity,
-                                    until=buy_until,
-                                    number=code_num)
-        return res
 
     def get_updates(self):
         if self._load_tweets():
