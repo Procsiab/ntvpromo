@@ -1,8 +1,9 @@
-version: "3.7"
+version: "3"
 services:
     bot:
         image: procsiab/ntvpromo:amd64
         volumes:
             - ./app:/app:z
             - ./.secrets:/secrets:z
+        network_mode: bridge
         restart: unless-stopped
