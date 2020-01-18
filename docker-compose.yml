@@ -1,9 +1,15 @@
 version: "3"
 services:
     bot:
-        image: procsiab/ntvpromo:amd64
+        image: procsiab/ntvpromo:arm32
+        container_name: ntvpromo
+        hostname: ntvpromo
         volumes:
             - ./app:/app:z
             - ./.secrets:/secrets:z
-        network_mode: bridge
         restart: unless-stopped
+        networks:
+            - ntvpromo_exposed
+networks:
+    ntvpromo_exposed:
+        external: true
