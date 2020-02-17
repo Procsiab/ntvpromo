@@ -2,3 +2,5 @@
 .secrets/*
 # Data file
 latest.json
+# QEMU's static binaries
+qemu-*
