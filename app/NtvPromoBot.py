@@ -30,7 +30,7 @@ class NtvPromoBot:
         start_handler = CommandHandler('start', self._callback_start)
         self._dispatcher.add_handler(start_handler)
         self._job_queue.run_repeating(self._callback_twitter,
-                                      interval=UPDATE_INTERVAL, first=0)
+                                      interval=UPDATE_INTERVAL, first=1)
 
     def _callback_start(self, update, context):
         logging.info("The user {} [{}] has called the start function"
@@ -74,7 +74,7 @@ class NtvPromoBot:
             valid_end = valid_end.groups()
             valid_end = valid_end[1] + valid_end[2] + valid_end[3]
         price_drop = code_drop[0]
-        if len(code_drop) == 2:
+        if len(code_drop) > 1:
             price_drop += ", " + code_drop[1]
         code_validity = valid_start
         if valid_end is not None:
