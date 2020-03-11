@@ -1,6 +1,4 @@
-# Secrets folder
-.secrets/*
-# Data file
+# Application data
 latest.json
 # QEMU's static binaries
 qemu-*

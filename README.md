@@ -1,8 +1,10 @@
 # NTV Promo Code bot
 
-#### Description:
+#### Description
 
 This repository contains the code for a docker-compose deployable Telegram bot, which uses the [Telegram Python API](https://github.com/python-telegram-bot/python-telegram-bot) and this [Twitter Javascript API scraper](https://github.com/bisguzar/twitter-scraper); the bot itself will just look for the latest promo code related tweet among the ones on the first page of the **ItaloTreno** account, by scraping it every ten minutes.
+
+Also, the Docker Images for ARMv7, AARCH64 and x86\_X64 platforms are automatically built from this repository, and available from [Docker Hub](https://hub.docker.com/r/procsiab/ntvpromo)
 
 ## Building with Dockerfile
 
@@ -25,7 +27,7 @@ The Python code assumes the existence of the folder `.secret` in the repository'
 ```
 
 The `.secret` text files should contain the following data:
-- AUTH_USER: a Telegram user ID or a group ID to post the updates into;
+- AUTH\_USER: a Telegram user ID or a group ID to post the updates into;
 - TOKEN: a Telegram bot token, which can be obtained from BotFather.
 
 *NOTE*: the code provided in this repository will not work without such secret files!

@@ -1,5 +1,7 @@
-FROM amd64/alpine:3.11
+FROM arm32v7/alpine:3.11
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
+
+COPY qemu-arm-static /usr/bin/
 
 ADD ./app /app
 
@@ -8,5 +10,7 @@ RUN apk add --no-cache py3-pip gcc python3-dev musl-dev libffi-dev openssl-dev l
 
 WORKDIR /app
 VOLUME ["/app"]
+
+RUN rm -rf /usr/bin/qemu-arm-static
 
 ENTRYPOINT ["python3", "main.py"]
