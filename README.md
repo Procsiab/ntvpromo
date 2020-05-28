@@ -14,7 +14,7 @@ The Dockerfile is written to allow cross-architecture builds, using QEMU's user-
 - to build the container for *aarch64*, run `cp $(which qemu-aarch64-static) .`;
 - run the build process with `docker build -t myregistry/ntvpromo:arm64 .`.
 
-If you want to use a target architecture different from ARM 64 bit, just change the Dockerfile according to the needed _qemu-static-*_ binary file, and copy it into the repo directory as shown above. Also, remember to specify the correct base image at the beinning of the Dockerfile.
+If you want to use a target architecture different from ARM 64 bit, just change the Dockerfile according to the needed _qemu-static-*_ binary file, and copy it into the repo directory as shown above. Also, remember to specify the correct base image at the beginning of the Dockerfile.
 
 ## Installing secrets
 
