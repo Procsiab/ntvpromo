@@ -1,12 +1,20 @@
-FROM arm64v8/alpine:3.11
+FROM arm64v8/alpine:3.11.6
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 COPY qemu-aarch64-static /usr/bin/
 
 ADD ./app /app
 
-RUN apk add --no-cache py3-pip gcc python3-dev musl-dev libffi-dev openssl-dev libxml2-dev libxslt-dev && \
-    pip3 install -U pip && pip3 install -U -r/app/requirements.txt
+RUN apk add --no-cache \
+    python3=~3.8 \
+    gcc=~9 \
+    python3-dev=~3.8 \
+    musl-dev=~1.1 \
+    libffi-dev=~3.2 \
+    openssl-dev=~1.1 \
+    libxml2-dev=~2.9 \
+    libxslt-dev=~1.1 && \
+    pip3 install -I pip==20.1.1 && pip3 install -I -r /app/requirements.txt
 
 WORKDIR /app
 VOLUME ["/app"]
