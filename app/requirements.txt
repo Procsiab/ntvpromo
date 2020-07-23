@@ -1,2 +1,2 @@
-twitter-scraper==0.4.2
-python-telegram-bot==12.7
+twitter-scraper==0.4.4
+python-telegram-bot==12.8

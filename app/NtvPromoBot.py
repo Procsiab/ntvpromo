@@ -1,5 +1,6 @@
 import logging
 import re
+from re import *
 
 from telegram import ParseMode
 from telegram.ext import CallbackContext, CommandHandler, Updater
