@@ -1,14 +1,15 @@
-FROM amd64/alpine:3.11.6
+FROM amd64/alpine:3.12.0
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 ADD ./app /app
 
 RUN apk add --no-cache \
     python3=~3.8 \
+    py3-pip=~20.1.1 \
     gcc=~9 \
     python3-dev=~3.8 \
     musl-dev=~1.1 \
-    libffi-dev=~3.2 \
+    libffi-dev=~3.3 \
     openssl-dev=~1.1 \
     libxml2-dev=~2.9 \
     libxslt-dev=~1.1 && \
