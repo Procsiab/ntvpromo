@@ -1,11 +1,12 @@
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 from json.decoder import JSONDecodeError
-from twitter_scraper import get_tweets
+import GetOldTweets3 as got
 
 ACCOUNT_NAME = 'ItaloTreno'
+TWEET_BUF_SIZE = 20
 TARGET_WORDLIST = ['codice', 'promo', 'risparmi']
 FILE_NAME = 'latest.json'
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -44,16 +45,19 @@ class TweetScraper:
 
     def _load_tweets(self):
         global ACCOUNT_NAME
-        recent_tweets = get_tweets(ACCOUNT_NAME, pages=1)
+        # Scraping query
+        tweetCriteria = got.manager.TweetCriteria().setUsername(ACCOUNT_NAME).setMaxTweets(TWEET_BUF_SIZE).setTopTweets(True)
+        recent_tweets = got.manager.TweetManager.getTweets(tweetCriteria)
         return self._get_latest(recent_tweets)
 
     def _get_latest(self, tweet_list):
         global TARGET_WORDLIST
         for tweet in tweet_list:
-            if any(word in tweet['text'] for word in TARGET_WORDLIST):
-                if self._check_date(tweet['time']):
-                    self._latest['text'] = tweet['text']
-                    self._latest['time'] = tweet['time'].strftime(DATE_FORMAT)
+            if any(word in tweet.text for word in TARGET_WORDLIST):
+                # Pass a timezone-naive datetime to the check_date method
+                if self._check_date(tweet.date.replace(tzinfo=None)):
+                    self._latest['text'] = tweet.text
+                    self._latest['time'] = tweet.date.strftime(DATE_FORMAT)
                     return True
         return False
 

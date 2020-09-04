@@ -1,2 +1,2 @@
-twitter-scraper==0.4.4
+GetOldTweets3==0.0.11
 python-telegram-bot==12.8
