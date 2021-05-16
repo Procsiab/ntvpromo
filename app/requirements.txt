@@ -1,2 +1,2 @@
-GetOldTweets3==0.0.11
-python-telegram-bot==12.8
+git+https://github.com/twintproject/twint.git#egg=twint
+python-telegram-bot==13.5
