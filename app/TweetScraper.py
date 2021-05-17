@@ -45,7 +45,6 @@ class TweetScraper:
         try:
             with open(FILE_NAME, 'r') as infile:
                 self._latest = json.load(infile)
-                print("loaded latest tweet: {}".format(self._latest))
         except (FileNotFoundError, JSONDecodeError):
             logging.info("Writing new file '{}' with default contents"
                          .format(FILE_NAME))
