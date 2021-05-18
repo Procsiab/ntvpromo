@@ -41,6 +41,5 @@ RUN pip install --no-cache-dir \
     && rm -rf /wheels
 
 WORKDIR /app
-VOLUME ["/secrets"]
 
 ENTRYPOINT ["python3", "main.py"]

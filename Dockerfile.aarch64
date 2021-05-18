@@ -43,7 +43,6 @@ RUN pip install --no-cache-dir \
     && rm -rf /wheels
 
 WORKDIR /app
-VOLUME ["/secrets"]
 
 RUN rm -rf /usr/bin/qemu-aarch64-static
 

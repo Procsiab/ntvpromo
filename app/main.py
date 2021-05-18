@@ -14,7 +14,7 @@ AUTH_USER = []
 def _init_secrets():
     global TOKEN
     global AUTH_USER
-    _secrets_path = '/secrets/'
+    _secrets_path = '/auth/'
     _secrets_folder = Path(_secrets_path)
     if not _secrets_folder.exists():
         _secrets_path = './.secrets/'

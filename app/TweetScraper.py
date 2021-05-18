@@ -3,12 +3,14 @@ import logging
 from datetime import datetime
 
 from json.decoder import JSONDecodeError
+from os import environ
+import pytz
 import twint
 
 ACCOUNT_NAME = 'ItaloTreno'
 TWEET_BUF_SIZE = 20
 TARGET_WORDLIST = ['codice', 'promo', 'risparmi']
-FILE_NAME = 'latest.json'
+FILE_NAME = 'data/latest.json'
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S %Z"
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
@@ -22,13 +24,15 @@ class TweetScraper:
         global DATE_FORMAT
         global ACCOUNT_NAME
         global TWEET_BUF_SIZE
+        self._timezone = pytz.timezone(environ["TZ"])
         # Scraping settings
         self._twint_config = twint.Config()
         self._twint_config.Username = ACCOUNT_NAME
         self._twint_config.Store_object = True
         self._twint_config.Hide_output = True
+        sample_time = self._timezone.localize(datetime(2000, 1, 1))
         self._latest = {'text': "",
-                        'time': datetime(2000, 1, 1).strftime(DATE_FORMAT)}
+                        'time': sample_time.strftime(DATE_FORMAT)}
         self._read_latest()
 
     # Write to file the _latest attribute, as JSON

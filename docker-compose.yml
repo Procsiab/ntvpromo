@@ -1,12 +1,12 @@
 version: "3"
 services:
     bot:
-        image: procsiab/ntvpromo:1.1-aarch64
+        image: procsiab/ntvpromo:1.4-aarch64
         container_name: ntvpromo
         hostname: ntvpromo
         volumes:
-            - ./app:/app:z
-            - ./.secrets:/secrets:z
+            - ./app/data:/app/data:z
+            - ./.secrets:/auth:z
         restart: unless-stopped
         networks:
             - ntvpromo_exposed

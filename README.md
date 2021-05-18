@@ -50,7 +50,8 @@ python3 -m venv app/.venv
 source app/.venv/bin/activate
 pip3 install -U pip
 pip3 install -U -r app/requirements.txt
-python3 app/main.py
+cd app
+python3 main.py
 ```
 
 The bot should start logging some info.
