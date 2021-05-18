@@ -50,8 +50,9 @@ python3 -m venv app/.venv
 source app/.venv/bin/activate
 pip3 install -U pip
 pip3 install -U -r app/requirements.txt
-cd app
-python3 main.py
+export TZ="Europe/Rome"
+mkdir data
+python3 app/main.py
 ```
 
 The bot should start logging some info.
