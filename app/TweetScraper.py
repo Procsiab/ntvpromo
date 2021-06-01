@@ -84,7 +84,6 @@ class TweetScraper:
     def get_updates(self):
         if self._load_tweets():
             self._write_latest()
-            self._read_latest()
             return self._latest
         else:
             return None
