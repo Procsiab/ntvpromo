@@ -56,9 +56,9 @@ class NtvPromoBot:
         _RE_STR = "([A-Z]{3}[A-Z]*)([1-9]0)*"
         _RE_DROP = "([-]*[1-9]{1}[0-9]+%)"
         _RE_NUM = "([1-9]{1}[0-9]*[.][0]{3})"
-        _RE_UNTIL = "([Aa]cquista){1}([\D]+)(\d\d)([\D]+)(\d\d\/\d\d)"
-        _RE_VALID_START = "([Vv]iagg[io][\D]+dal){1}([\D]+)(\d\d|\d)(\s|\/)([a-zA-Z]+|\d\d|\d)"
-        _RE_VALID_END = "( al )(\d\d|\d)(\s|\/)([a-zA-z]+|\d\d|\d)"
+        _RE_UNTIL = "([Aa]cquista){1}([\D]+)(\d\d)([\D]+)(\d\d\/\d\d|\d\d\.\d\d)"
+        _RE_VALID_START = "([Vv]iagg[io][\D]+dal){1}([\D]+)(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
+        _RE_VALID_END = "( al )(\d\d|\d)(\s|\/|\.)([a-zA-z]+|\d\d|\d)"
         code_str = re.search(_RE_STR, text).group()
         code_drop = re.findall(_RE_DROP, text)
         code_num = re.search(_RE_NUM, text)
