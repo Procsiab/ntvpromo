@@ -69,7 +69,7 @@ class TweetScraper:
             if any(word in tweet.tweet for word in TARGET_WORDLIST):
                 # Pass a timezone-naive datetime to the check_date method
                 if self._check_date(tweet.datetime):
-                    self._latest['text'] = tweet.tweet
+                    self._latest['text'] = tweet.tweet.replace('\xa0', ' ')
                     self._latest['time'] = tweet.datetime
                     return True
         return False
