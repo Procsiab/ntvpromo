@@ -1,7 +1,7 @@
 version: "3"
 services:
     bot:
-        image: procsiab/ntvpromo:1.4-aarch64
+        image: procsiab/ntvpromo:1.7-aarch64
         container_name: ntvpromo
         hostname: ntvpromo
         volumes:

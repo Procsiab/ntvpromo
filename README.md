@@ -1,10 +1,14 @@
 # NTV Promo Code bot
 
+[![Container Build](https://github.com/Procsiab/ntvpromo/actions/workflows/build-container-publish-dockerhub.yaml/badge.svg)](https://github.com/Procsiab/ntvpromo/actions/workflows/build-container-publish-dockerhub.yaml)
+
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/procsiab/ntvpromo?label=Latest%20tag%20pushed%20on%20Docker%20Hub)
+
 #### Description
 
 This repository contains the code for a docker-compose deployable Telegram bot, which uses the [Telegram Python API](https://github.com/python-telegram-bot/python-telegram-bot) and this [Twitter Javascript API scraper](https://github.com/bisguzar/twitter-scraper); the bot itself will just look for the latest promo code related tweet among the ones on the first page of the **ItaloTreno** account, by scraping it every ten minutes.
 
-Also, the Docker Images for ARMv7, AARCH64 and x86\_X64 platforms are automatically built from this repository, and available from [Docker Hub](https://hub.docker.com/r/procsiab/ntvpromo)
+Also, the Docker Images for ARMv7, AARCH64 and x86\_64 platforms are automatically built from this repository, and available from [Docker Hub](https://hub.docker.com/r/procsiab/ntvpromo)
 
 ## Building with Dockerfile
 
