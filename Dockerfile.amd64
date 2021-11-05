@@ -1,23 +1,18 @@
-ARG PYTHON_VERSION=3.9.5-alpine3.13
+ARG PYTHON_VERSION=3.9.7-slim-bullseye
 
 # Builder image for generating Python wheels
 FROM amd64/python:${PYTHON_VERSION} AS builder
 
 ENV PYTHONUNBUFFERED 1
-RUN apk add --no-cache \
-    git \
-    gcc \
-    g++ \
-    musl-dev \
-    libffi-dev \
-    openssl-dev \
-    libxml2-dev \
-    libxslt-dev
+RUN apt update && apt install -y git gcc g++
 
 WORKDIR /wheels
 COPY ./app/requirements.txt /wheels/requirements.txt
 
-RUN pip wheel -r ./requirements.txt
+RUN pip wheel \
+    --requirement ./requirements.txt \
+    --index-url https://pypi.python.org/simple \
+    --wheel-dir /wheels
 
 
 # Final container image for the application
@@ -29,15 +24,9 @@ ENV TZ Europe/Rome
 ADD ./app /app
 COPY --from=builder /wheels /wheels
 
-RUN apk add --no-cache \
-    libxml2 \
-    libxslt \
-    libstdc++ \
-    && rm -rf /var/cache/apk/*
-
 RUN pip install --no-cache-dir \
-    -r /app/requirements-deploy.txt \
-    -f /wheels \
+    --requirement /app/requirements-deploy.txt \
+    --find-links /wheels \
     && rm -rf /wheels
 
 WORKDIR /app
