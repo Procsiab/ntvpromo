@@ -1,4 +1,4 @@
-numpy==1.21.4
+numpy==1.22.1
 pandas==1.3.4
-git+https://github.com/twintproject/twint.git#egg=twint==2.1.21
-python-telegram-bot==13.5
+git+https://github.com/Museum-Barberini/twint.git@cc3498af87d7df711ee42490cbac01d5831ac4ae#egg=twint
+python-telegram-bot==13.10
