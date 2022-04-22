@@ -1,9 +1,9 @@
-ARG PYTHON_VERSION=3.9.7-slim-bullseye
+ARG PYTHON_VERSION=3.9.12-slim-bullseye
 
 # Builder image for generating Python wheels
-FROM arm32v7/python:${PYTHON_VERSION} AS builder
+FROM docker.io/arm64v8/python:${PYTHON_VERSION} AS builder
 
-COPY qemu-arm-static /usr/bin/
+COPY qemu-aarch64-static /usr/bin/
 ENV PYTHONUNBUFFERED 1
 RUN apt update && apt install -y git gcc g++
 
@@ -12,15 +12,15 @@ COPY ./app/requirements.txt /wheels/requirements.txt
 
 RUN pip wheel \
     --requirement ./requirements.txt \
-    --index-url https://www.piwheels.org/simple \
+    --index-url https://pypi.python.org/simple \
     --wheel-dir /wheels
 
 
 # Final container image for the application
-FROM arm32v7/python:${PYTHON_VERSION}
+FROM arm64v8/python:${PYTHON_VERSION}
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
-COPY --from=builder /usr/bin/qemu-arm-static /usr/bin/
+COPY --from=builder /usr/bin/qemu-aarch64-static /usr/bin/
 ENV PYTHONUNBUFFERED 1
 ENV TZ Europe/Rome
 ADD ./app /app
@@ -33,6 +33,6 @@ RUN pip install --no-cache-dir \
 
 WORKDIR /app
 
-RUN rm -rf /usr/bin/qemu-arm-static
+RUN rm -rf /usr/bin/qemu-aarch64-static
 
 ENTRYPOINT ["python3", "main.py"]

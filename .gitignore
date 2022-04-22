@@ -1,4 +1,5 @@
 # Application data
 latest.json
+data
 # QEMU's static binaries
 qemu-*
