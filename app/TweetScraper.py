@@ -76,7 +76,9 @@ class TweetScraper:
 
     def _check_date(self, timestamp):
         global DATE_FORMAT
-        if datetime.strptime(timestamp, DATE_FORMAT) > datetime.strptime(self._latest['time'], DATE_FORMAT):
+        _current_time = datetime.strptime(timestamp, DATE_FORMAT)
+        _last_updated = datetime.strptime(self._latest['time'], DATE_FORMAT)
+        if _current_time > _last_updated:
             return True
         else:
             return False

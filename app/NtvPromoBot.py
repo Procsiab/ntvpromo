@@ -1,6 +1,5 @@
 import logging
 import re
-from re import *
 
 from telegram import ParseMode
 from telegram.ext import CallbackContext, CommandHandler, Updater
@@ -52,14 +51,19 @@ class NtvPromoBot:
             logging.info("No recent promo codes from @ItaloTreno")
 
     def _format_response(self, text):
-        # Parse the message to find relevant indormation
-        _RE_STR = "([A-Z]{3}[A-Z]*)([1-9]0)*"
-        _RE_DROP = "([-]*[1-9]{1}[0-9]+%)"
-        _RE_NUM = "([1-9]{1}[0-9]*[.][0]{3})"
-        _RE_UNTIL = "([Aa]cquista){1}([\D]+)(\d\d)([\D]+)(\d+\/\d+|\d+\.\d+)"
-        _RE_VALID_START = "([Vv]iagg[io][\D]+dal){1}([\D]+)(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
-        _RE_VALID_END = "( al )(\d\d|\d)(\s|\/|\.)([a-zA-z]+|\d\d|\d)"
-        code_str = re.search(_RE_STR, text).group()
+        # Parse the message to find relevant information
+        _RE_STR = r"([A-Z]{3}[A-Z]*)([1-9]0)*"
+        _RE_STR = r"(codice |promo )([A-Z]{3}[A-Z]*)([1-9]0)*"
+        _RE_DROP = r"([-]*[1-9]{1}[0-9]+%)"
+        _RE_NUM = r"([1-9]{1}[0-9]*[.][0]{3})"
+        _RE_UNTIL = r"([Aa]cquista){1}([\D]+)(\d\d)([\D]+)(\d+\/\d+|\d+\.\d+)"
+        _RE_VALID_START = r"([Vv]iagg[io][\D]+dal){1}([\D]+)(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
+        _RE_VALID_END = r"( al )(\d\d|\d)(\s|\/|\.)([a-zA-z]+|\d\d|\d)"
+        code_str = re.search(_RE_STR, text).groups()
+        if code_str[2] is not None:
+            code_str = code_str[1] + code_str[2]
+        else:
+            code_str = code_str[1]
         code_drop = re.findall(_RE_DROP, text)
         code_num = re.search(_RE_NUM, text)
         if code_num is not None:
