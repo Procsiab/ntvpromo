@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.9.12-slim-bullseye
+ARG PYTHON_VERSION=3.9.16-slim-bullseye
 
 # Builder image for generating Python wheels
 FROM docker.io/arm64v8/python:${PYTHON_VERSION} AS builder
