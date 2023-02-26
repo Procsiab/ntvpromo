@@ -6,7 +6,7 @@
 
 #### Description
 
-This repository contains the code for a container-compose deployable Telegram bot, which uses the [Telegram Python API](https://github.com/python-telegram-bot/python-telegram-bot) and this [Twitter Javascript API scraper](https://github.com/bisguzar/twitter-scraper); the bot itself will just look for the latest promo code related tweet among the ones on the first page of the **ItaloTreno** account, by scraping it every ten minutes.
+This repository contains the code for a container-compose deployable Telegram bot, which uses the [Telegram Python API](https://github.com/python-telegram-bot/python-telegram-bot) and [BeautifulSoup scraper](https://beautiful-soup-4.readthedocs.io/en/latest/); the bot itself will extract some keywords from the offer page on ItaloTreno's website, by scraping it every ten minutes and sending an update if that strings differs from the ones previously saved.
 
 Also, the Container Images for ARMv7, AARCH64 and x86\_64 platforms are automatically built from this repository, and available from [Docker Hub](https://hub.docker.com/r/procsiab/ntvpromo)
 
