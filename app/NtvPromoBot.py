@@ -1,18 +1,17 @@
 import logging
-import re
 
 from telegram import ParseMode
 from telegram.ext import CallbackContext, CommandHandler, Updater
-from TweetScraper import TweetScraper as SCRAPER
+from NtvScraper import NtvScraper as SCRAPER
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
                     level=logging.INFO)
 
 UPDATE_INTERVAL = 600
-MESSAGE_FORMAT = """🚄 Codice sconto: <b>{string}</b> [{drop}]
+MESSAGE_FORMAT = """🚄 Codice sconto: <b>{code}</b> [{drop}]
 ⎯⎯⎯⎯⎯⎯⎯⎯
-📅 Periodo:\t\t{valid}
-⏰ <i>Entro</i>:\t\t{until}
+📅 Periodo:\t\t{period}
+⏰ <i>Entro</i>:\t\t{before}
 🎫 Disponibilità: {number}
 ⎯⎯⎯⎯⎯⎯⎯⎯
 https://biglietti.italotreno.it"""
@@ -29,7 +28,7 @@ class NtvPromoBot:
         # Add handlers and jobs to the dispatcher
         start_handler = CommandHandler('start', self._callback_start)
         self._dispatcher.add_handler(start_handler)
-        self._job_queue.run_repeating(self._callback_twitter,
+        self._job_queue.run_repeating(self._callback_scraper,
                                       interval=UPDATE_INTERVAL, first=1)
 
     def _callback_start(self, update, context):
@@ -39,59 +38,25 @@ class NtvPromoBot:
         context.bot.send_message(chat_id=update.message.chat_id,
                                  text="This bot will only talk to authorized users!")
 
-    def _callback_twitter(self, context: CallbackContext):
-        response = self._scraper.get_updates()
-        if response is not None:
+    def _callback_scraper(self, context: CallbackContext):
+        promo_card = self._scraper.get_updates()
+        if promo_card is not None:
             for user in self._auth_user:
                 context.bot.send_message(chat_id=user,
-                                         text=self._format_response(response['text']),
+                                         text=self._format_response(promo_card),
                                          parse_mode=ParseMode.HTML)
                 logging.info("Sent update to the user {}".format(user))
         else:
             logging.info("No recent promo codes from @ItaloTreno")
 
-    def _format_response(self, text):
-        # Parse the message to find relevant information
-        _RE_STR = r"([A-Z]{3}[A-Z]*)([1-9]0)*"
-        _RE_STR = r"(codice |promo )([A-Z]{3}[A-Z]*)([1-9]0)*"
-        _RE_DROP = r"([-]*[1-9]{1}[0-9]+%)"
-        _RE_NUM = r"([1-9]{1}[0-9]*[.][0]{3})"
-        _RE_UNTIL = r"([Aa]cquista){1}([\D]+)(\d\d)([\D]+)(\d+\/\d+|\d+\.\d+)"
-        _RE_VALID_START = r"([Vv]iagg[io][\D]+dal){1}([\D]+)(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
-        _RE_VALID_END = r"( al )(\d\d|\d)(\s|\/|\.)([a-zA-z]+|\d\d|\d)"
-        code_str = re.search(_RE_STR, text).groups()
-        if code_str[2] is not None:
-            code_str = code_str[1] + code_str[2]
-        else:
-            code_str = code_str[1]
-        code_drop = re.findall(_RE_DROP, text)
-        code_num = re.search(_RE_NUM, text)
-        if code_num is not None:
-            code_num = code_num.group()
-        else:
-            code_num = "N/A"
-        buy_until = re.search(_RE_UNTIL, text).groups()
-        buy_until = "{}, ore {}".format(buy_until[4], buy_until[2])
-        valid_start = re.search(_RE_VALID_START, text).groups()
-        valid_start = valid_start[2] + valid_start[3] + valid_start[4]
-        valid_end = re.search(_RE_VALID_END, text)
-        if valid_end is not None:
-            valid_end = valid_end.groups()
-            valid_end = valid_end[1] + valid_end[2] + valid_end[3]
-        price_drop = code_drop[0]
-        if len(code_drop) > 1:
-            price_drop += ", " + code_drop[1]
-        code_validity = valid_start
-        if valid_end is not None:
-            code_validity += " - " + valid_end
-
+    def _format_response(self, promo_card: dict):
         # Build and format the message containing the promo code
-        res = MESSAGE_FORMAT.format(string=code_str,
-                                    drop=price_drop,
-                                    valid=code_validity,
-                                    until=buy_until,
-                                    number=code_num)
-        return res
+        text = MESSAGE_FORMAT.format(code=promo_card["code"],
+                                     drop=promo_card["drop"],
+                                     period=promo_card["period"],
+                                     before=promo_card["before"],
+                                     number=promo_card["number"])
+        return text
 
     def run(self):
         self._updater.start_polling()
