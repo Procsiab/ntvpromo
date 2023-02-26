@@ -2,6 +2,7 @@ import logging
 
 from telegram import ParseMode
 from telegram.ext import CallbackContext, CommandHandler, Updater
+from telegram.error import Unauthorized, TimedOut, NetworkError
 from NtvScraper import NtvScraper as SCRAPER
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
@@ -42,10 +43,15 @@ class NtvPromoBot:
         promo_card = self._scraper.get_updates()
         if promo_card is not None:
             for user in self._auth_user:
-                context.bot.send_message(chat_id=user,
-                                         text=self._format_response(promo_card),
-                                         parse_mode=ParseMode.HTML)
-                logging.info("Sent update to the user {}".format(user))
+                try:
+                    context.bot.send_message(chat_id=user,
+                                             text=self._format_response(promo_card),
+                                             parse_mode=ParseMode.HTML)
+                    logging.info("Sent update to the user {}".format(user))
+                except Unauthorized:
+                    logging.warn("The user {} has blocked this bot".format(user))
+                except (TimedOut, NetworkError):
+                    logging.warn("A network error occurred during the message sending")
         else:
             logging.info("No recent promo codes from @ItaloTreno")
 
