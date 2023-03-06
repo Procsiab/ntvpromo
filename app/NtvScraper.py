@@ -1,3 +1,4 @@
+import os
 import logging
 import traceback
 import sys
@@ -8,12 +9,12 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
 
+LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
+logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
+                    level=LOGLEVEL)
+
 URL = 'https://www.italotreno.it/it/offerte-treno/codicepromo'
 FILE_NAME = 'data/latest.json'
-
-logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
-                    level=logging.DEBUG)
-
 
 class NtvScraper:
 

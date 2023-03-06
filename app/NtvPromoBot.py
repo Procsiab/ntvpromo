@@ -1,3 +1,4 @@
+import os
 import logging
 
 from telegram import ParseMode
@@ -5,8 +6,9 @@ from telegram.ext import CallbackContext, CommandHandler, Updater
 from telegram.error import Unauthorized, TimedOut, NetworkError
 from NtvScraper import NtvScraper as SCRAPER
 
+LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
-                    level=logging.INFO)
+                    level=LOGLEVEL)
 
 UPDATE_INTERVAL = 600
 MESSAGE_FORMAT = """🚄 Codice sconto: <b>{code}</b> [{drop}]
