@@ -12,7 +12,7 @@ URL = 'https://www.italotreno.it/it/offerte-treno/codicepromo'
 FILE_NAME = 'data/latest.json'
 
 logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(message)s',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 
 
 class NtvScraper:
@@ -80,13 +80,13 @@ class NtvScraper:
         # Traverse the promo table and locate only the offer codes
         promo_table = soup.find_all(class_="content content-single--default grid-container cards-1col --new")
         for promo_card in promo_table:
-            isPromoCode = True if promo_card.find("h3", string="Codice Promo") else False
+            isPromoCode = True if promo_card.find("h3", string=re.compile('Codice Promo|PROMO.*')) else False
             if isPromoCode:
                 promo_desc = promo_card.find(class_="content__subtitle")
                 promo_avail = promo_card.find(class_="content__testo")
                 _RE_CODE = r"<strong>([A-Z]{3}[A-Z]*)([0-9]+)?<\/strong>"
                 _RE_DROP = r"([-]*[1-9]{1}[0-9]+%)"
-                _RE_BOOK_START = r" dal [\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
+                _RE_BOOK_START = r" dal(l')?( )?[\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
                 _RE_BOOK_END = r" al [\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
                 _RE_BUY_BEFORE = r"([Aa]cquista){1}[\D]+(\d\d)(.00)?[\D]+(\d+\/\d+|\d+\.\d+)"
                 _RE_CODES_NUM = r"([1-9]{1}[0-9]*[.]?[0]{3})"
@@ -101,7 +101,7 @@ class NtvScraper:
                     logging.debug("Parsed discount: {}".format(str_price_drop))
                     # Extract booking period
                     str_book_start = re.search(_RE_BOOK_START, str(promo_desc)).groups()
-                    str_book_start = ''.join(item for item in str_book_start if item)
+                    str_book_start = ''.join(item for item in str_book_start[1:] if item)
                     str_book_end = re.search(_RE_BOOK_END, str(promo_desc))
                     str_book_period = str_book_start
                     if str_book_end is not None:
