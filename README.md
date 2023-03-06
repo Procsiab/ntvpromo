@@ -60,3 +60,11 @@ python3 app/main.py
 ```
 
 The bot should start logging some info.
+
+### Change the log verbosity
+
+You may run the script with a different verbosity, for example to run it at the DEBUG level, export the `LOGLEVEL` variable with the desired value:
+
+```bash
+LOGLEVEL='DEBUG' python3 app/main.py
+```
