@@ -16,6 +16,7 @@ logging.basicConfig(format='\n[%(asctime)s]: %(name)s (%(levelname)s)\n - %(mess
 URL = 'https://www.italotreno.it/it/offerte-treno/codicepromo'
 FILE_NAME = 'data/latest.json'
 
+
 class NtvScraper:
 
     # Initialize the _latest tweet attribute and try to read it from file
@@ -81,7 +82,7 @@ class NtvScraper:
         # Traverse the promo table and locate only the offer codes
         promo_table = soup.find_all(class_="content content-single--default grid-container cards-1col --new")
         for promo_card in promo_table:
-            isPromoCode = True if promo_card.find("h3", string=re.compile('Codice Promo|PROMO.*')) else False
+            isPromoCode = True if promo_card.find("h3", string=re.compile('Codic[ei] Promo|PROMO.*')) else False
             if isPromoCode:
                 promo_desc = promo_card.find(class_="content__subtitle")
                 promo_avail = promo_card.find(class_="content__testo")
