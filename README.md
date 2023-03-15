@@ -15,10 +15,9 @@ Also, the Container Images for ARMv7, AARCH64 and x86\_64 platforms are automati
 The Containerfile is written to allow cross-architecture builds, using QEMU's user-static package: to build the image on x86 for another platform do the following:
 
 - be sure to install `qemu-user-static` if you need to run the container on an architecture different from the local one;
-- to build the container for *aarch64*, run `cp $(which qemu-aarch64-static) .`;
 - run the build process with `podman build -t myregistry/ntvpromo:latest -f Containerfile.aarch64 .`.
 
-If you want to use a target architecture different from ARM 64 bit, just change the Containerfile according to the needed _qemu-static-*_ binary file, and copy it into the repo directory as shown above. Also, remember to specify the correct base image at the beginning of the Containerfile.
+If you want to use a target architecture different from ARM 64 bit, just change the Containerfile according to the needed architecture. Also, remember to specify the correct base image at the beginning of the Containerfile.
 
 ## Installing secrets
 
