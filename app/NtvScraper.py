@@ -82,11 +82,11 @@ class NtvScraper:
         # Traverse the promo table and locate only the offer codes
         promo_table = soup.find_all(class_="content content-single--default grid-container cards-1col --new")
         for promo_card in promo_table:
-            isPromoCode = True if promo_card.find("h3", string=re.compile('Codic[ei] Promo|PROMO.*')) else False
+            isPromoCode = True if promo_card.find("h3", string=re.compile('Codic[ei]|CODIC[EI] [Pp]romo|PROMO.*')) else False
             if isPromoCode:
                 promo_desc = promo_card.find(class_="content__subtitle")
                 promo_avail = promo_card.find(class_="content__testo")
-                _RE_CODE = r"<strong>([A-Z]{3}[A-Z]*)([0-9]+)?<\/strong>"
+                _RE_CODE = r"<strong>([0-9]+)?([A-Z]{3}[A-Z]*)([0-9]+)?<\/strong>"
                 _RE_DROP = r"([-]*[1-9]{1}[0-9]+%)"
                 _RE_BOOK_START = r" dal(l')?( )?[\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
                 _RE_BOOK_END = r" al [\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
@@ -126,7 +126,7 @@ class NtvScraper:
                                      number=str_codes_number)
                     break
                 except AttributeError:
-                    print("Error occurred while parsing promo code!")
+                    logging.warning("Error occurred while parsing promo code!")
                     traceback.print_exception(*sys.exc_info())
 
     def get_updates(self) -> dict:
