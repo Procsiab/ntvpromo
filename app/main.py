@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
+import logging
+
 from pathlib import Path
 
 from NtvPromoBot import NtvPromoBot as BOT
+
+logging.getLogger('httpx').setLevel(logging.WARNING)
 
 TOKEN = ''
 AUTH_USER = []
@@ -29,10 +33,7 @@ def _init_secrets():
 def main():
     _init_secrets()
     myBot = BOT(TOKEN, AUTH_USER)
-    try:
-        myBot.run()
-    finally:
-        myBot.halt()
+    myBot.run_blocking()
 
 
 # Run Main
