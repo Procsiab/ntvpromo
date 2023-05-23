@@ -111,7 +111,7 @@ class NtvScraper:
                         str_book_period += " - " + str_book_end
                     logging.debug("Parsed booking period: {}".format(str_book_period))
                     # Extract promo deadline
-                    str_buy_before = re.search(_RE_BUY_BEFORE, str(promo_avail)).groups()
+                    str_buy_before = re.search(_RE_BUY_BEFORE, str(promo_desc)).groups()
                     str_buy_before = "{}, ore {}".format(str_buy_before[3], str_buy_before[1])
                     logging.debug("Parsed promo deadline: {}".format(str_buy_before))
                     # Extract codes number
