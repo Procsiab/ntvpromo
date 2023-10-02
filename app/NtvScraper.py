@@ -90,7 +90,7 @@ class NtvScraper:
                 _RE_DROP = r"([-]*[1-9]{1}[0-9]+%)"
                 _RE_BOOK_START = r" dal(l')?( )?[\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
                 _RE_BOOK_END = r" al [\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
-                _RE_BUY_BEFORE = r"([Aa]cquista){1}[\D]+(\d\d)(.00)?[\D]+(\d+\/\d+|\d+\.\d+)"
+                _RE_BUY_BEFORE = r"([Aa]cquista){1}[\D]+(\d\d)(.00)?[\D]+(0?(\d+)(\/|\.)0?(\d+))"
                 _RE_CODES_NUM = r"([1-9]{1}[0-9]*[.]?[0]{3})"
                 try:
                     # Extract code
@@ -112,7 +112,7 @@ class NtvScraper:
                     logging.debug("Parsed booking period: {}".format(str_book_period))
                     # Extract promo deadline
                     str_buy_before = re.search(_RE_BUY_BEFORE, str(promo_desc)).groups()
-                    str_buy_before = "{}, ore {}".format(str_buy_before[3], str_buy_before[1])
+                    str_buy_before = "{}.{}, ore {}".format(str_buy_before[4], str_buy_before[6], str_buy_before[1])
                     logging.debug("Parsed promo deadline: {}".format(str_buy_before))
                     # Extract codes number
                     str_codes_number = re.search(_RE_CODES_NUM, str(promo_avail))
