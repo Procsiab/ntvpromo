@@ -91,7 +91,7 @@ class NtvScraper:
                 _RE_BOOK_START = r" dal(l')?( )?[\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
                 _RE_BOOK_END = r" al [\D]+(\d\d|\d)(\s|\/|\.)([a-zA-Z]+|\d\d|\d)"
                 _RE_BUY_BEFORE = r"([Aa]cquista){1}[\D]+(\d\d)(.00)?[\D]+(0?(\d+)(\/|\.)0?(\d+))"
-                _RE_CODES_NUM = r"([1-9]{1}[0-9]*[.]?[0]{3})"
+                _RE_CODES_NUM = r"([1-9]{1}[0-9]*[.]?[0]{3}([.]?[0]{3})?)"
                 try:
                     # Extract code
                     str_promo_code = re.search(_RE_CODE, str(promo_desc)).groups()
