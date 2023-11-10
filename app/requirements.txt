@@ -1,4 +1,4 @@
-python-telegram-bot[job-queue]==20.5
+python-telegram-bot[job-queue]==20.6
 requests==2.31.0
 beautifulsoup4==4.12.2
-pytz==2023.3
+pytz==2023.3.post1
