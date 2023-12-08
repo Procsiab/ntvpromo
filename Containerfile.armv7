@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11.6-alpine
+ARG PYTHON_VERSION=3.11.7-alpine
 
 # Builder image for generating Python wheels
 FROM docker.io/arm32v7/python:${PYTHON_VERSION} AS builder
