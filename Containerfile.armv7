@@ -1,7 +1,8 @@
-ARG PYTHON_VERSION=3.11.8-alpine
+ARG PYTHON_VERSION=3.11.9-alpine
+ARG PLTF_ARCH=arm/v7
 
 # Builder image for generating Python wheels
-FROM docker.io/arm32v7/python:${PYTHON_VERSION} AS builder
+FROM --platform=linux/${PLTF_ARCH} docker.io/library/python:${PYTHON_VERSION} AS builder
 
 ENV PYTHONUNBUFFERED 1
 RUN apk add --no-cache gcc g++
@@ -16,7 +17,7 @@ RUN pip wheel \
 
 
 # Final container image for the application
-FROM docker.io/arm32v7/python:${PYTHON_VERSION}
+FROM --platform=linux/${PLTF_ARCH} docker.io/library/python:${PYTHON_VERSION}
 LABEL maintainer "Lorenzo Prosseda <lerokamut@gmail.com>"
 
 ENV PYTHONUNBUFFERED 1
