@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.13.9-alpine3.22
+ARG PYTHON_VERSION=3.13.12-alpine3.23
 ARG PLTF_ARCH=amd64
 
 # Builder image for generating Python wheels
