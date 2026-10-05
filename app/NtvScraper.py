@@ -34,7 +34,7 @@ class NtvScraper:
         try:
             with open(FILE_NAME, 'r') as infile:
                 _saved_promo_card = json.load(infile)
-                if _saved_promo_card != self._latest:
+                if self._latest['code'] != "N/A" and _saved_promo_card != self._latest:
                     self._write_latest()
                     return True
                 else:
@@ -127,7 +127,7 @@ class NtvScraper:
                 logging.debug(traceback.format_exc())
                 continue
 
-        logging.warning("No valid promo codes found on the page.")
+        logging.debug("No valid promo codes found on the page.")
         self._set_latest(code='N/A', drop='N/A', period='N/A', before='N/A', number='N/A')
 
     def get_updates(self) -> dict:
