@@ -34,18 +34,17 @@ class NtvScraper:
         try:
             with open(FILE_NAME, 'r') as infile:
                 _saved_promo_card = json.load(infile)
-                if self._latest['code'] != "N/A" and _saved_promo_card != self._latest:
+                if _saved_promo_card != self._latest:
                     self._write_latest()
                     return True
-                else:
-                    return False
+                return False
         except FileNotFoundError:
             self._write_latest()
             return True
 
     def _write_latest(self):
         global FILE_NAME
-        os.makedirs(os.path.dirname(FILE_NAME), exist_ok=True)
+        os.makedirs(os.path.dirname(FILE_NAME) if os.path.dirname(FILE_NAME) else '.', exist_ok=True)
         with open(FILE_NAME, 'w') as outfile:
             outfile.write(json.dumps(self._latest, indent=4, sort_keys=True, default=str))
 
@@ -66,7 +65,6 @@ class NtvScraper:
                 link = open(URL, 'r', encoding='utf-8').read()
         except Exception as e:
             logging.error(f"Failed to fetch URL: {e}")
-            self._set_latest(code='N/A', drop='N/A', period='N/A', before='N/A', number='N/A')
             return
 
         soup = BeautifulSoup(link, "html.parser")
@@ -126,9 +124,6 @@ class NtvScraper:
                 logging.warning("Error parsing article. Continuing to next.")
                 logging.debug(traceback.format_exc())
                 continue
-
-        logging.debug("No valid promo codes found on the page.")
-        self._set_latest(code='N/A', drop='N/A', period='N/A', before='N/A', number='N/A')
 
     def get_updates(self) -> dict:
         self._scrape_website()
